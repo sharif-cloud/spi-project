@@ -8,6 +8,8 @@ The platform includes communication, notice sharing, academic marketplace, group
 ## 🌍 Live Demo
 
 🔗 **Live Preview:** https://main-spi-project.surge.sh
+		   ** https://spi-project-01.surge.sh
+		   ** https://spi-project01.vercel.app
 
 ---
 
