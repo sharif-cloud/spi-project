@@ -44,47 +44,63 @@ const contacts = [
 ];
 
 
-
 const Contact = () => {
   const [search, setSearch] = useState("");
   const [filterDept, setFilterDept] = useState("All");
   const [filterShift, setFilterShift] = useState("All");
 
-  const departments = ["All", "Civil Technology", "Electrical Technology", "Electronics Technology", "Computer Science & Tech", "Non-Tech", "Environmental Technology"];
+  const departments = [
+    "All",
+    "Civil Technology",
+    "Electrical Technology",
+    "Electronics Technology",
+    "Computer Science & Tech",
+    "Non-Tech",
+    "Environmental Technology",
+  ];
+
   const shifts = ["All", "1st Shift", "2nd Shift", "N/A"];
 
-  const filteredContacts = contacts.filter(contact => {
-    const matchesSearch = contact.name.toLowerCase().includes(search.toLowerCase());
-    const matchesDept = filterDept === "All" || contact.department === filterDept;
-    const matchesShift = filterShift === "All" || contact.shift === filterShift;
+  const filteredContacts = contacts.filter((contact) => {
+    const matchesSearch = contact.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    const matchesDept =
+      filterDept === "All" || contact.department === filterDept;
+    const matchesShift =
+      filterShift === "All" || contact.shift === filterShift;
+
     return matchesSearch && matchesDept && matchesShift;
   });
 
   return (
-    <div className="p-6 bg-zinc-900 min-h-screen text-white">
-      <h2 className="text-3xl font-bold mb-6 text-center text-white">Contact List</h2>
+    <div className="px-4 sm:px-6 py-6 bg-zinc-900 min-h-screen text-white">
+      {/* Title */}
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
+        Contact List
+      </h2>
 
-      {/* Search Box */}
-      <div className="flex justify-center mb-4">
+      {/* Search */}
+      <div className="flex justify-center mb-5">
         <input
           type="text"
-          placeholder="Search contacts..."
+          placeholder="Search by name..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full md:w-1/2 px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-zinc-800 text-white"
+          className="w-full sm:w-2/3 lg:w-1/2 px-4 py-2 rounded-lg bg-zinc-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
         />
       </div>
 
-      {/* Filter Buttons */}
-      <div className="flex flex-wrap justify-center gap-3 mb-6">
-        {departments.map(dept => (
+      {/* Department Filter (Scrollable on mobile) */}
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
+        {departments.map((dept) => (
           <button
             key={dept}
             onClick={() => setFilterDept(dept)}
-            className={`px-4 py-1 rounded-full border transition ${
+            className={`whitespace-nowrap px-4 py-1 rounded-full text-sm border transition ${
               filterDept === dept
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-zinc-800 text-white border-gray-600 hover:bg-blue-700"
+                ? "bg-blue-600 border-blue-600"
+                : "bg-zinc-800 border-gray-600 hover:bg-blue-700"
             }`}
           >
             {dept}
@@ -92,15 +108,16 @@ const Contact = () => {
         ))}
       </div>
 
-      <div className="flex flex-wrap justify-center gap-3 mb-6">
-        {shifts.map(shift => (
+      {/* Shift Filter */}
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-hide">
+        {shifts.map((shift) => (
           <button
             key={shift}
             onClick={() => setFilterShift(shift)}
-            className={`px-4 py-1 rounded-full border transition ${
+            className={`whitespace-nowrap px-4 py-1 rounded-full text-sm border transition ${
               filterShift === shift
-                ? "bg-green-600 text-white border-green-600"
-                : "bg-zinc-800 text-white border-gray-600 hover:bg-green-700"
+                ? "bg-green-600 border-green-600"
+                : "bg-zinc-800 border-gray-600 hover:bg-green-700"
             }`}
           >
             {shift}
@@ -109,26 +126,59 @@ const Contact = () => {
       </div>
 
       {/* Contact Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filteredContacts.length > 0 ? (
-          filteredContacts.map(contact => (
+          filteredContacts.map((contact) => (
             <div
               key={contact.id}
-              className="bg-zinc-800 rounded-xl shadow-lg p-5 hover:shadow-2xl transition duration-300"
+              className="bg-zinc-800 rounded-xl p-4 sm:p-5 shadow hover:shadow-xl transition"
             >
-              <h3 className="text-xl font-semibold mb-2 text-white">{contact.name}</h3>
-              {contact.designation && <p className="text-gray-300 mb-1">{contact.designation}</p>}
-              {contact.department && <p className="text-gray-400 mb-1">{contact.department} | {contact.shift}</p>}
-              <p className="text-blue-400 mb-1 break-words overflow-hidden">
-                📧 <a href={`mailto:${contact.email}`} className="hover:underline">{contact.email}</a>
-              </p>
-              <p className="text-blue-400">
-                📞 <a href={`tel:${contact.phone}`} className="hover:underline">{contact.phone}</a>
-              </p>
+              <h3 className="text-lg sm:text-xl font-semibold mb-1 break-words">
+                {contact.name}
+              </h3>
+
+              {contact.designation && (
+                <p className="text-sm text-gray-300 mb-1">
+                  {contact.designation}
+                </p>
+              )}
+
+              {contact.department && (
+                <p className="text-xs sm:text-sm text-gray-400 mb-2">
+                  {contact.department}{" "}
+                  {contact.shift && `| ${contact.shift}`}
+                </p>
+              )}
+
+              {contact.email && (
+                <p className="text-sm text-blue-400 break-all mb-1">
+                  📧{" "}
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className="hover:underline"
+                  >
+                    {contact.email}
+                  </a>
+                </p>
+              )}
+
+              {contact.phone && (
+                <p className="text-sm text-blue-400">
+                  📞{" "}
+                  <a
+                    href={`tel:${contact.phone}`}
+                    className="hover:underline"
+                  >
+                    {contact.phone}
+                  </a>
+                </p>
+              )}
             </div>
           ))
         ) : (
-          <p className="text-center text-gray-400 col-span-full">No contacts found.</p>
+          <p className="col-span-full text-center text-gray-400">
+            No contacts found.
+          </p>
         )}
       </div>
     </div>
